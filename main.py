@@ -32,7 +32,9 @@ class SettingsScreen(Screen):
     pass
 
 class AddNewSensorContent(MDFloatLayout):
-    pass
+    pass        
+#jonadiobsaoiyhgbfoiasbgdgf
+
 
 class MainScreen(Screen):
     def add_list_item(self):

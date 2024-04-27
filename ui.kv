@@ -1,0 +1,294 @@
+ScreenManager:
+    MainScreen:
+    SettingsScreen:
+
+<AddNewSensorContent@MDFloatLayout>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: dp(50)
+
+    MDTextField:
+        hint_text: "ID Czujnika"
+        # mode: "rectangle"
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        helper_text: 'xxx-xxx-xxx'
+        line_color_focus: 58/255,83/255,155/255,1
+        hint_text_color_focus: 58/255,83/255,155/255,1
+        md_bg_color: 200/255,245/255,254/255,1
+
+<CustomDialogContent@FloatLayout>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: dp(400)
+            
+    MDFloatLayout:
+
+        MDRectangleFlatIconButton:
+            text: 'Napełnienie'
+            icon: 'water'
+            icon_color: 58/255,83/255,155/255,1
+            pos_hint: {'center_x': .55, 'center_y': 1.55}
+            theme_text_color: 'Custom'
+            line_color: 0,0,0,0
+            text_color: 58/255,83/255,155/255,1
+            disabled: True
+            disabled_color: 58/255,83/255,155/255,1
+            line_color_disabled: 0,0,0,0
+            font_style: 'Body2'
+
+        MDProgressBar:
+            value: app.water_cm_progress
+            pos_hint: {'center_x': .975, 'center_y': 1.55}
+            size_hint: 0.25, .03
+
+        MDFlatButton:
+            text: app.water_cm_progress_info 
+            icon_color: 58/255,83/255,155/255,1
+            pos_hint: {'center_x': 1.175, 'center_y': 1.55}
+            theme_text_color: 'Custom'
+            text_color: 58/255,83/255,155/255,1
+            disabled: True
+            disabled_color: 58/255,83/255,155/255,1
+            font_style: 'Body2'
+
+        MDFlatButton:
+            text: app.water_cm
+            icon_color: 58/255,83/255,155/255,1
+            pos_hint: {'center_x': 1.35, 'center_y': 1.55}
+            theme_text_color: 'Custom'
+            text_color: 58/255,83/255,155/255,1
+            disabled: True
+            disabled_color: 58/255,83/255,155/255,1
+            font_style: 'Body2'
+
+    MDFloatLayout:
+
+        MDRectangleFlatIconButton:
+            text: 'Poziom baterii'
+            icon: 'battery'
+            icon_color: 58/255,83/255,155/255,1
+            pos_hint: {'center_x': .58, 'center_y': 1.475}
+            theme_text_color: 'Custom'
+            line_color: 0,0,0,0
+            text_color: 58/255,83/255,155/255,1
+            disabled: True
+            disabled_color: 58/255,83/255,155/255,1
+            line_color_disabled: 0,0,0,0
+            font_style: 'Body2'
+
+        MDProgressBar:
+            value: 32
+            pos_hint: {'center_x': .975, 'center_y': 1.475}
+            size_hint: 0.25, .03
+
+        MDFlatButton:
+            text: '32 %' 
+            icon_color: 58/255,83/255,155/255,1
+            pos_hint: {'center_x': 1.175, 'center_y': 1.475}
+            theme_text_color: 'Custom'
+            text_color: 58/255,83/255,155/255,1
+            disabled: True
+            disabled_color: 58/255,83/255,155/255,1
+            font_style: 'Body2'
+
+    MDFloatLayout:
+
+        MDFlatButton:
+            text: 'Refresh Rate:' 
+            icon_color: 58/255,83/255,155/255,1
+            pos_hint: {'center_x': .3, 'center_y': 1.05}
+            theme_text_color: 'Custom'
+            text_color: 58/255,83/255,155/255,1
+            disabled: True
+            disabled_color: 58/255,83/255,155/255,1
+            font_style: 'Body2'
+
+        MDFlatButton:
+            id: slider_value_label_info
+            text: f"{root.ids.slider.value:.0f}"
+            icon_color: 58/255,83/255,155/255,1
+            pos_hint: {'center_x': .5, 'center_y': 1.05}
+            theme_text_color: 'Custom'
+            text_color: 58/255,83/255,155/255,1
+            disabled: True
+            disabled_color: 58/255,83/255,155/255,1
+            font_style: 'Body2'
+
+        MDFlatButton:
+            id: slider_value_label 
+            text: f"{root.ids.slider.value:.0f}"
+            icon_color: 58/255,83/255,155/255,1
+            pos_hint: {'center_x': .2, 'center_y': 1}
+            theme_text_color: 'Custom'
+            text_color: 58/255,83/255,155/255,1
+            disabled: True
+            disabled_color: 58/255,83/255,155/255,1
+            font_style: 'Body2'
+
+        MDSlider:
+            id: slider
+            pos_hint: {'center_x': .6, 'center_y': 1}
+            size_hint: .75,1
+            hint: True
+            hint_bg_color: 58/255,83/255,155/255,1
+            hint_text_color: "white"
+            hint_radius: 6, 0, 6, 0
+            color: 58/255,83/255,155/255,1
+            thumb_color_active: 58/255,83/255,155/255,1
+            thumb_color_inactive: 58/255,83/255,155/255,1
+            value: 0
+            max: 61
+            min: 1
+            on_value: 
+                slider_value_label.text = "{}".format(int(self.value))
+                slider_value_label_info.text = "{}".format(int(self.value))
+
+        MDRaisedButton:
+            id: button
+            text: "Press me"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: app.menu_open()
+
+<ContentForPanel>:
+    adaptive_height: True
+    height: 300             # na telefonie ustawic na 300
+    md_bg_color: 200/255,245/255,254/255,1
+    radius: 0,0,10,10
+
+    MDFloatLayout:
+
+        MDFloatLayout:
+
+            MDRectangleFlatIconButton:
+                text: 'Napełnienie'
+                icon: 'water'
+                icon_color: 58/255,83/255,155/255,1
+                pos_hint: {'center_x': .2, 'center_y': .8}
+                theme_text_color: 'Custom'
+                line_color: 0,0,0,0
+                text_color: 58/255,83/255,155/255,1
+                disabled: True
+                disabled_color: 58/255,83/255,155/255,1
+                line_color_disabled: 0,0,0,0
+                font_style: 'Body2'
+
+            MDProgressBar:
+                value: app.water_cm_progress
+                pos_hint: {'center_x': .6, 'center_y': 0.8}
+                size_hint: 0.25, 0.1
+
+            MDFlatButton:
+                text: app.water_cm_progress_info
+                icon_color: 58/255,83/255,155/255,1
+                pos_hint: {'center_x': .9, 'center_y': .8}
+                theme_text_color: 'Custom'
+                text_color: 58/255,83/255,155/255,1
+                disabled: True
+                disabled_color: 58/255,83/255,155/255,1
+                font_style: 'Body2'
+
+        MDFloatLayout:
+
+            MDRectangleFlatIconButton:
+                text: 'Poziom baterii'
+                icon: 'battery'
+                icon_color: 58/255,83/255,155/255,1
+                pos_hint: {'center_x': .225, 'center_y': .5}
+                theme_text_color: 'Custom'
+                line_color: 0,0,0,0
+                text_color: 58/255,83/255,155/255,1
+                disabled: True
+                disabled_color: 58/255,83/255,155/255,1
+                line_color_disabled: 0,0,0,0
+                font_style: 'Body2'
+
+            MDProgressBar:
+                value: 32
+                pos_hint: {'center_x': .6, 'center_y': 0.5}
+                size_hint: 0.25, 0.1
+
+            MDFlatButton:
+                text: '32%'
+                icon_color: 58/255,83/255,155/255,1
+                pos_hint: {'center_x': .9, 'center_y': .5}
+                theme_text_color: 'Custom'
+                text_color: 58/255,83/255,155/255,1
+                disabled: True
+                disabled_color: 58/255,83/255,155/255,1
+                font_style: 'Body2'
+
+        MDIconButton:
+            icon: 'cog'
+            theme_icon_color: "Custom"
+            icon_color: 65/255,131/255,215/255,1
+            pos_hint: {'center_x': .9}
+            icon_size: '20sp'
+            on_release: app.show_sensor_settings_dialog(root.panel_name)
+
+<MainScreen>:
+    name: 'mainscreen'
+    list_view: list_view 
+
+    MDFloatLayout:
+        md_bg_color: 129/255, 207/255, 224/255, 1
+
+        ScrollView:
+            size_hint: 0.8, 0.9  
+            pos_hint: {'center_x': .5}
+
+            MDList:
+                md_bg_color: 129/255, 207/255, 224/255, 1
+                id: list_view
+                spacing: "5dp"
+
+        MDFloatingActionButton:
+            icon: "plus"
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint: {"center_x": .5, "y": .05}
+            on_release: app.show_add_new_sensor_dialog()
+            elevation: 0
+
+        MDTopAppBar:
+            size_hint_y: .075
+            pos_hint: {"center_x": .5, "center_y": .975}
+            elevation: 0
+            md_bg_color:129/255,207/255,224/255,1
+
+            MDBoxLayout:
+
+                MDLabel:
+                    text: 'Witamy'
+                    pos_hint: {"center_y": .75}
+                    color: 34/255,49/255,63/255,1
+                    font_style: 'H6'
+
+                MDIconButton:
+                    icon: 'account'
+                    pos_hint: {"center_y": .8}
+                    color: 34/255,49/255,63/255,1
+                    on_release: root.manager.current = 'settingsscreen'
+
+<SettingsScreen>:
+    name: 'settingsscreen'
+    MDFloatLayout:
+        md_bg_color:197/255,239/255,247/255,1
+        MDTopAppBar:
+            size_hint_y: .075
+            pos_hint: {"center_x": .5, "center_y": .975}
+            elevation: 0
+            md_bg_color:197/255,239/255,247/255,1
+
+            MDBoxLayout:
+
+                MDIconButton:
+                    icon: 'arrow-left'
+                    pos_hint: {"center_y": .8}
+                    color: 34/255,49/255,63/255,1
+                    on_release: root.manager.current = 'mainscreen'
+
+
+
+        
+
+        
+                

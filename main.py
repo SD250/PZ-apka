@@ -33,7 +33,6 @@ class SettingsScreen(Screen):
 
 class AddNewSensorContent(MDFloatLayout):
     pass        
-#jonadiobsaoiyhgbfoiasbgdgf
 
 
 class MainScreen(Screen):

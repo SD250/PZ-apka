@@ -20,7 +20,7 @@ from kivymd.uix.menu import MDDropdownMenu
 
 import requests
 
-# Window.size = (1080/3,1920/3)       # na telefonie zakomnertowac albo usunac
+Window.size = (1080/3,1920/3)       # na telefonie zakomnertowac albo usunac
 
 class ContentForPanel(MDFloatLayout):
     panel_name = StringProperty('')
@@ -155,6 +155,54 @@ class MainApp(MDApp):
                 ],
             )
         self.add_sensor_dialog.open()
+
+    def change_refresh_rate(self, 
+                            slider, 
+                            change_refresh_rate_button, 
+                            slider_value_label_info,
+                            refresh_rate_data_uptodate_info,
+                            refresh_rate_data_uptodate_button,
+                            slider_time_value_label_info):
+        if slider.disabled:
+            slider.disabled = False
+            refresh_rate_data_uptodate_info.disabled = False
+            refresh_rate_data_uptodate_button.disabled = True
+            change_refresh_rate_button.text = "Ustaw"
+        else:
+            slider.disabled = True
+            refresh_rate_data_uptodate_info.disabled = True
+            refresh_rate_data_uptodate_button.disabled = False
+            slider_time_value_label_info.text = refresh_rate_data_uptodate_info.text
+            change_refresh_rate_button.text = "Zmień"
+            slider_value_label_info.text = "{}".format(int(slider.value))
+
+    def refresh_rate_time_value_menu_open(self, refresh_rate_data_uptodate_info):
+        def menu_callback(text):
+            refresh_rate_data_uptodate_info.text = text
+            menu.dismiss()
+
+        menu_items = [
+            {
+                "text": "sekund",
+                "on_release": lambda *args: menu_callback("sekund")
+            },
+            {
+                "text": "minut",
+                "on_release": lambda *args: menu_callback("minut")
+            },
+            {
+                "text": "godzin",
+                "on_release": lambda *args: menu_callback("godzin")
+            },
+        ]
+        menu = MDDropdownMenu(
+            caller=refresh_rate_data_uptodate_info,
+            items=menu_items,
+            width_mult=4,
+            position="auto"
+        )
+        menu.open()
+
 
     def build(self):
         self.theme_cls.theme_style = 'Light'

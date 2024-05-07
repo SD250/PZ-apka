@@ -96,7 +96,7 @@ ScreenManager:
         MDFlatButton:
             text: 'Refresh Rate:' 
             icon_color: 58/255,83/255,155/255,1
-            pos_hint: {'center_x': .3, 'center_y': 1.05}
+            pos_hint: {'center_x': .54, 'center_y': 1.375}
             theme_text_color: 'Custom'
             text_color: 58/255,83/255,155/255,1
             disabled: True
@@ -107,7 +107,18 @@ ScreenManager:
             id: slider_value_label_info
             text: f"{root.ids.slider.value:.0f}"
             icon_color: 58/255,83/255,155/255,1
-            pos_hint: {'center_x': .5, 'center_y': 1.05}
+            pos_hint: {'center_x': .75, 'center_y': 1.375}
+            theme_text_color: 'Custom'
+            text_color: 58/255,83/255,155/255,1
+            disabled: True
+            disabled_color: 58/255,83/255,155/255,1
+            font_style: 'Body2'
+
+        MDFlatButton:
+            id: slider_time_value_label_info
+            text: f"sekund"
+            icon_color: 58/255,83/255,155/255,1
+            pos_hint: {'center_x': .9, 'center_y': 1.375}
             theme_text_color: 'Custom'
             text_color: 58/255,83/255,155/255,1
             disabled: True
@@ -118,7 +129,7 @@ ScreenManager:
             id: slider_value_label 
             text: f"{root.ids.slider.value:.0f}"
             icon_color: 58/255,83/255,155/255,1
-            pos_hint: {'center_x': .2, 'center_y': 1}
+            pos_hint: {'center_x': .4, 'center_y': 1.33}
             theme_text_color: 'Custom'
             text_color: 58/255,83/255,155/255,1
             disabled: True
@@ -126,8 +137,9 @@ ScreenManager:
             font_style: 'Body2'
 
         MDSlider:
+            disabled: True
             id: slider
-            pos_hint: {'center_x': .6, 'center_y': 1}
+            pos_hint: {'center_x': .75, 'center_y': 1.33}
             size_hint: .75,1
             hint: True
             hint_bg_color: 58/255,83/255,155/255,1
@@ -141,17 +153,40 @@ ScreenManager:
             min: 1
             on_value: 
                 slider_value_label.text = "{}".format(int(self.value))
-                slider_value_label_info.text = "{}".format(int(self.value))
 
         MDRaisedButton:
-            id: button
-            text: "Press me"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: app.menu_open()
+            disabled: True
+            size_hint: None, None
+            width: dp(2000)  
+            height: dp(50)
+            id: refresh_rate_data_uptodate_info
+            text: "sekund"
+            elevation: 0
+            pos_hint: {"center_x": 1.25, "center_y": 1.33}
+            on_release: app.refresh_rate_time_value_menu_open(root.ids.refresh_rate_data_uptodate_info)
+
+        MDRaisedButton:
+            size_hint: None, None
+            width: dp(2000)  
+            height: dp(50)
+            id: change_refresh_rate_button
+            text: "Zmień"
+            elevation: 0
+            pos_hint: {"center_x": 1.25, "center_y": 1.23}
+            on_release: app.change_refresh_rate(root.ids.slider,root.ids.change_refresh_rate_button, root.ids.slider_value_label_info,root.ids.refresh_rate_data_uptodate_info,root.ids.refresh_rate_data_uptodate_button,root.ids.slider_time_value_label_info)
+
+        MDRectangleFlatButton:
+            size_hint: None, None
+            width: dp(2000)  
+            height: dp(50)
+            id: refresh_rate_data_uptodate_button
+            text: "Zauktalizuj dane teraz"
+            elevation: 0
+            pos_hint: {"center_x": 0.75, "center_y": 1.23}
 
 <ContentForPanel>:
     adaptive_height: True
-    height: 300             # na telefonie ustawic na 300
+    height: 100             # na telefonie ustawic na 300
     md_bg_color: 200/255,245/255,254/255,1
     radius: 0,0,10,10
 

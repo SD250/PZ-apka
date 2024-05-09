@@ -36,6 +36,7 @@ class AddNewSensorContent(MDFloatLayout):
 
 
 class MainScreen(Screen):
+    connected = StringProperty("Niepodłączony") 
     def add_list_item(self):
         panel_name = f"Czujnik #{len(self.list_view.children) + 1}"
         content = ContentForPanel()
@@ -49,7 +50,7 @@ class MainScreen(Screen):
                 theme_text_color= 'Custom',
                 text_color= (58/255,83/255,155/255,1),
                 divider=None,
-                secondary_text="Połączony",
+                secondary_text=self.connected,
                 bg_color = (197/255,239/255,247/255,1),
                 radius=(10,10,0,0),
                 size_hint_x = 1,
@@ -63,39 +64,60 @@ class MainApp(MDApp):
 
     water_cm = StringProperty('0')
     water_cm_progress = NumericProperty(round(0))
-    water_cm_progress_info = StringProperty('0 %')
+    water_cm_progress_info = StringProperty('0%')
     
+    container_cm = 17
+    container_cm_info = StringProperty(container_cm)
+
+    is_connected = False
 
     def update(self, *args):
-        water_container_full = 17.34
+        print("Aktualizacja danych...")
+        water_container_full = self.container_cm
         url = "https://fra1.blynk.cloud/external/api/get?token=wtFC-kSgVfDkyrtjds1zyb8tlR5nAdOy&V2"
         response = requests.get(url)
-        distance_cm = round(int(response.text) / 58,2)
-        self.water_cm = f"{distance_cm} cm"
-        self.water_cm_progress = round((water_container_full-distance_cm)*100/water_container_full) if distance_cm<water_container_full else 0 
-        self.water_cm_progress_info = f"{self.water_cm_progress} %"
+        if response.status_code == 200:
+            distance_cm = round(int(response.text) / 58, 2)
+            self.water_cm = f"{distance_cm}cm"
+            self.water_cm_progress = round((water_container_full - distance_cm) * 100 / water_container_full) if distance_cm < water_container_full else 0
+            self.water_cm_progress_info = f"{self.water_cm_progress}%"
 
-    # def menu_open(self):
-    #     menu_items = [
-    #         {
-    #             "text": f"Item {i}",
-    #             "on_release": lambda x=f"Item {i}": self.menu_callback(x),
-    #         } for i in range(5)
-    #     ]
-    #     MDDropdownMenu(
-    #         caller=self.root.ids.button, items=menu_items
-    #     ).open()
+        url_conn = "https://fra1.blynk.cloud/external/api/isHardwareConnected?token=wtFC-kSgVfDkyrtjds1zyb8tlR5nAdOy"
+        response = requests.get(url_conn)
+        if response.status_code == 200:
+            is_connected = response.json()  # Załóżmy, że zwraca bezpośrednio True/False
+            main_screen = self.root.get_screen('mainscreen')
+            main_screen.connected = "Połączony" if is_connected else "Niepołączony"
+            print("Status połączenia:", main_screen.connected)
+
+    def menu_open(self):
+        menu_items = [
+            {
+                "text": f"Item {i}",
+                "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+            } for i in range(5)
+        ]
+        MDDropdownMenu(
+            caller=self.root.ids.button, items=menu_items
+        ).open()
 
     def on_start(self):
-        Clock.schedule_interval(self.update, 2)
+        Clock.schedule_interval(self.update, 5)
     
     def close_sensor_settings_dialog(self, *args):
         if self.settings_dialog:
             self.settings_dialog.dismiss()
 
     def save_sensor_settings(self, *args):
-        if self.settings_dialog:
-            self.settings_dialog.dismiss()
+        new_container_cm = self.settings_dialog.content_cls.ids.text_field.text
+        
+        if new_container_cm.isdigit():
+            self.container_cm_info = new_container_cm
+            self.container_cm = int(new_container_cm)
+            self.settings_dialog.content_cls.ids.text_field.line_color_focus = (58/255,83/255,155/255,1) 
+        else:
+            self.settings_dialog.content_cls.ids.text_field.line_color_focus = (1, 0, 0, 1)
+            self.settings_dialog.content_cls.ids.text_field.error = True  
 
     def show_sensor_settings_dialog(self, panel_name):
         if not self.settings_dialog:
@@ -106,7 +128,7 @@ class MainApp(MDApp):
                 content_cls=CustomDialogContent(),
                 buttons=[
                     MDFlatButton(
-                        text="ANULUJ",
+                        text="ZAMKNIJ",
                         on_release=self.close_sensor_settings_dialog,
                         theme_text_color= 'Custom',
                         text_color= (58/255,83/255,155/255,1),
@@ -190,19 +212,15 @@ class MainApp(MDApp):
                 "text": "minut",
                 "on_release": lambda *args: menu_callback("minut")
             },
-            {
-                "text": "godzin",
-                "on_release": lambda *args: menu_callback("godzin")
-            },
         ]
         menu = MDDropdownMenu(
             caller=refresh_rate_data_uptodate_info,
             items=menu_items,
-            width_mult=4,
-            position="auto"
+            width_mult=0.5, 
+            ver_growth='up',
+            position="auto",
         )
         menu.open()
-
 
     def build(self):
         self.theme_cls.theme_style = 'Light'

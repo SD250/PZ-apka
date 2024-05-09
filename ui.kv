@@ -37,7 +37,7 @@ ScreenManager:
             font_style: 'Body2'
 
         MDProgressBar:
-            value: app.water_cm_progress
+            value: app.water_cm_progress + 1
             pos_hint: {'center_x': .975, 'center_y': 1.55}
             size_hint: 0.25, .03
 
@@ -82,7 +82,7 @@ ScreenManager:
             size_hint: 0.25, .03
 
         MDFlatButton:
-            text: '32 %' 
+            text: '32%' 
             icon_color: 58/255,83/255,155/255,1
             pos_hint: {'center_x': 1.175, 'center_y': 1.475}
             theme_text_color: 'Custom'
@@ -96,7 +96,7 @@ ScreenManager:
         MDFlatButton:
             text: 'Refresh Rate:' 
             icon_color: 58/255,83/255,155/255,1
-            pos_hint: {'center_x': .54, 'center_y': 1.375}
+            pos_hint: {'center_x': .54, 'center_y': 1.175}
             theme_text_color: 'Custom'
             text_color: 58/255,83/255,155/255,1
             disabled: True
@@ -107,7 +107,7 @@ ScreenManager:
             id: slider_value_label_info
             text: f"{root.ids.slider.value:.0f}"
             icon_color: 58/255,83/255,155/255,1
-            pos_hint: {'center_x': .75, 'center_y': 1.375}
+            pos_hint: {'center_x': .75, 'center_y': 1.175}
             theme_text_color: 'Custom'
             text_color: 58/255,83/255,155/255,1
             disabled: True
@@ -118,7 +118,7 @@ ScreenManager:
             id: slider_time_value_label_info
             text: f"sekund"
             icon_color: 58/255,83/255,155/255,1
-            pos_hint: {'center_x': .9, 'center_y': 1.375}
+            pos_hint: {'center_x': .9, 'center_y': 1.175}
             theme_text_color: 'Custom'
             text_color: 58/255,83/255,155/255,1
             disabled: True
@@ -129,7 +129,7 @@ ScreenManager:
             id: slider_value_label 
             text: f"{root.ids.slider.value:.0f}"
             icon_color: 58/255,83/255,155/255,1
-            pos_hint: {'center_x': .4, 'center_y': 1.33}
+            pos_hint: {'center_x': .4, 'center_y': 1.115}
             theme_text_color: 'Custom'
             text_color: 58/255,83/255,155/255,1
             disabled: True
@@ -139,7 +139,7 @@ ScreenManager:
         MDSlider:
             disabled: True
             id: slider
-            pos_hint: {'center_x': .75, 'center_y': 1.33}
+            pos_hint: {'center_x': .75, 'center_y': 1.115}
             size_hint: .75,1
             hint: True
             hint_bg_color: 58/255,83/255,155/255,1
@@ -162,7 +162,7 @@ ScreenManager:
             id: refresh_rate_data_uptodate_info
             text: "sekund"
             elevation: 0
-            pos_hint: {"center_x": 1.25, "center_y": 1.33}
+            pos_hint: {"center_x": 1.25, "center_y": 1.115}
             on_release: app.refresh_rate_time_value_menu_open(root.ids.refresh_rate_data_uptodate_info)
 
         MDRaisedButton:
@@ -172,7 +172,7 @@ ScreenManager:
             id: change_refresh_rate_button
             text: "Zmień"
             elevation: 0
-            pos_hint: {"center_x": 1.25, "center_y": 1.23}
+            pos_hint: {"center_x": 1.25, "center_y": 1.}
             on_release: app.change_refresh_rate(root.ids.slider,root.ids.change_refresh_rate_button, root.ids.slider_value_label_info,root.ids.refresh_rate_data_uptodate_info,root.ids.refresh_rate_data_uptodate_button,root.ids.slider_time_value_label_info)
 
         MDRectangleFlatButton:
@@ -180,9 +180,34 @@ ScreenManager:
             width: dp(2000)  
             height: dp(50)
             id: refresh_rate_data_uptodate_button
-            text: "Zauktalizuj dane teraz"
+            text: "Zaktualizuj dane teraz"
             elevation: 0
-            pos_hint: {"center_x": 0.75, "center_y": 1.23}
+            pos_hint: {"center_x": 0.725, "center_y": 1.}
+
+    MDFloatLayout:
+
+        MDFlatButton:
+            text: 'Ustaw głębokość zbiornika [cm]: ' 
+            icon_color: 58/255,83/255,155/255,1
+            pos_hint: {'center_x': .75, 'center_y': 1.33}
+            theme_text_color: 'Custom'
+            text_color: 58/255,83/255,155/255,1
+            disabled: True
+            disabled_color: 58/255,83/255,155/255,1
+            font_style: 'Body2'
+
+        MDTextField:
+            id: text_field
+            hint_text: ""
+            pos_hint: {'center_x': 1.25, 'center_y': 1.33}
+            size_hint: 0.2, 0.175
+            text: f"{app.container_cm_info}"
+            helper_text: 'Podaj liczbe'
+            line_color_focus: 58/255,83/255,155/255,1
+            hint_text_color_focus: 58/255,83/255,155/255,1
+            md_bg_color: 200/255,245/255,254/255,1
+            error_color: 1, 0, 0, 1  
+            line_color_normal: app.theme_cls.divider_color
 
 <ContentForPanel>:
     adaptive_height: True
